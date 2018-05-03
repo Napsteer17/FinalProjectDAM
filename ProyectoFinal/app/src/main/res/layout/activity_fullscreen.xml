@@ -1,11 +1,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bgcolor"
     tools:context="org.insbaixcamp.proyectofinal.FullscreenActivity">
-
 
     <TextView
         android:id="@+id/tvtitle"
@@ -16,8 +14,7 @@
         android:text="Skate 4"
         android:textAllCaps="false"
         android:textColor="@android:color/background_light"
-        android:textSize="90dp"
-        app:fontFamily="@font/bangers" />
+        android:textSize="90dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -46,10 +43,10 @@
             android:id="@+id/determinateBar"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:padding="5px"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="17dp"
+            android:padding="5px"
             android:progress="0" />
     </RelativeLayout>
 

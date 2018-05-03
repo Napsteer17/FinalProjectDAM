@@ -2,7 +2,6 @@ package org.insbaixcamp.proyectofinal;
 
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +27,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
         Timer timer = new Timer();
 
+
         int timeout = 4000; // make the activity visible for 4 seconds
 
 
@@ -37,17 +37,21 @@ public class FullscreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 while (progressBar.getProgress() < 100) {
-                    progressBar.incrementProgressBy(1);
 
-                    Random r = new Random();
-                    int i1 = r.nextInt(100 - 10) + 65;
-                    sleep(i1);
+                    progressBar.incrementProgressBy(2);
+
+
+                    Random random = new Random();
+                    int randomSleepTime = random.nextInt(100 - 10) + 65;
+                    sleep(randomSleepTime);
                 }
 
                 finish();
-                Intent homepage = new Intent(FullscreenActivity.this, MainActivity.class);
+                Intent homepage = new Intent(FullscreenActivity.this, MapsMainActivity.class);
                 startActivity(homepage);
+
             }
+
         }, timeout);
 
     }
