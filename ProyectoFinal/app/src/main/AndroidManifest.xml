@@ -10,6 +10,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -44,14 +48,22 @@
 
         <activity
             android:name=".MapsMainActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".SkateActivity" />
+
         <activity android:name=".ShopActivity" />
+
         <activity
             android:name=".NewsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".WorldActivity"></activity>
+
+        <activity android:name=".WorldActivity" />
+        <!-- <activity
+             android:name=".LoginActivity"
+             android:label="@string/title_activity_login"></activity>-->
     </application>
 
 </manifest>

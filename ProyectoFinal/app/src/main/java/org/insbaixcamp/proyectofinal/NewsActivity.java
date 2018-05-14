@@ -14,6 +14,6 @@ public class NewsActivity extends AppCompatActivity {
 
         wvNews=findViewById(R.id.wvNews);
         wvNews.loadUrl("http://dcshoes.es/skate/news/");
+
     }
 }
-//http://www.go-skateboarding.com/?cat=4
