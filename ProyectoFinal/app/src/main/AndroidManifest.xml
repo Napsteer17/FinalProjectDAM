@@ -53,7 +53,9 @@
 
         <activity android:name=".SkateActivity" />
 
-        <activity android:name=".ShopActivity" />
+        <activity android:name=".ShopActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".NewsActivity"
