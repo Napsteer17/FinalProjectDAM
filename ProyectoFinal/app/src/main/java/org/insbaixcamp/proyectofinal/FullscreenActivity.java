@@ -2,8 +2,8 @@ package org.insbaixcamp.proyectofinal;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.Settings.Secure;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
@@ -14,6 +14,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,6 +26,8 @@ import static android.os.SystemClock.sleep;
 
 public class FullscreenActivity extends AppCompatActivity implements ValueEventListener, ChildEventListener {
     boolean addId = true;
+    protected String username;
+    DatabaseReference ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,26 +39,15 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
 
         Timer timer = new Timer();
 
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference("Users");
+        setupUsername();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        ref = database.getReference("Users/" + username + "/data");
 
-        database.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.hasChild("name")) {
-                    addId = false;
-                }
-            }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM", Locale.getDefault());
+        final Date date = new Date();
+        final String fecha = dateFormat.format(date);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        if (addId) {
-            database.child(Secure.getString(this.getContentResolver(), Secure.ANDROID_ID))
-                    .setValue("");
-        }
-
+        ref.push().setValue(fecha + " " + date);
 
         //Device ID
         //Secure.getString(this.getContentResolver(),Secure.ANDROID_ID);
@@ -117,5 +111,16 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
     @Override
     public void onCancelled(DatabaseError databaseError) {
 
+    }
+
+    private void setupUsername() {
+        SharedPreferences prefs = getApplication().getSharedPreferences("ToDoPrefs", 0);
+        String username = prefs.getString("username", null);
+        if (username == null) {
+            Random r = new Random();
+            username = "AndroidUser" + r.nextInt(100000);
+            prefs.edit().putString("username", username).commit();
+        }
+        this.username = prefs.getString("username", null);
     }
 }

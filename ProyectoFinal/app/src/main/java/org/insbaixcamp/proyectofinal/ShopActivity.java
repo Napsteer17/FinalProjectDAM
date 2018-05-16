@@ -34,18 +34,13 @@ public class ShopActivity extends AppCompatActivity {
         listaSkates.add(new SkateArticles("Nyjah Rise Up Lion 7.75", "113,18€", R.drawable.skate1));
         listaSkates.add(new SkateArticles("Cut Out Seal 7.7", "139,99€", R.drawable.skate2));
         listaSkates.add(new SkateArticles("Shrapnel Tie Dye", "92,82€", R.drawable.skate3));
-        listaSkates.add(new SkateArticles("-Elemento X negro ovejas 10 Año colabo sello", "107,52€", R.drawable.skate4));
+        listaSkates.add(new SkateArticles("Elemento X negro ovejas 10 Año colabo sello", "107,52€", R.drawable.skate4));
         listaSkates.add(new SkateArticles("Script Nam Palm 7.75", "129,99€", R.drawable.skate5));
         listaSkates.add(new SkateArticles("Santa Cruz Deck Dance with Death Guzman", "81,78€", R.drawable.skate6));
         listaSkates.add(new SkateArticles("Nyjah King 7.75", "124,99€", R.drawable.skate7));
         listaSkates.add(new SkateArticles("Nyjah Dialed 7.7", "94,54€", R.drawable.skate8));
         listaSkates.add(new SkateArticles("Mr. Element 04CP1Y", "104,86€", R.drawable.skate9));
         listaSkates.add(new SkateArticles("River Camo 7.5 Assorted U", "99,00€", R.drawable.skate10));
-
-    }
-
-    public void onClick(View view) {
-
 
     }
 
