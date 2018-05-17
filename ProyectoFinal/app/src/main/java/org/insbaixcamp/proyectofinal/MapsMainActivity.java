@@ -1,12 +1,11 @@
 package org.insbaixcamp.proyectofinal;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,6 +16,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MapsMainActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener {
 
@@ -25,6 +29,7 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
     ImageButton imageShop;
     ImageButton imageNews;
     ImageButton imageWorld;
+    ImageButton imageChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +43,13 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
         imageShop = findViewById(R.id.ibShop);
         imageNews = findViewById(R.id.ibNews);
         imageWorld = findViewById(R.id.ibWorld);
+        imageChat = findViewById(R.id.ibChat);
 
         imageSkate.setOnClickListener(this);
         imageShop.setOnClickListener(this);
         imageNews.setOnClickListener(this);
         imageWorld.setOnClickListener(this);
+        imageChat.setOnClickListener(this);
     }
 
 
@@ -59,15 +66,58 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng reus = new LatLng(41.1495401, 1.1054653);
-        afegirMarcador(reus, "Reus");
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference();
+
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String laKey = dataSnapshot.getKey();
+                int countMarkers = (int) dataSnapshot.getChildrenCount();
+                Log.e("-" + laKey + "-", countMarkers + "");
+
+                if (laKey.equals("Locations")) {
+
+                    for (int i = 0; i < countMarkers; i++) {
+
+                        double firstPosition = (double) dataSnapshot.child("Location" + i).child("0").getValue();
+                        double secondPosition = (double) dataSnapshot.child("Location" + i).child("1").getValue();
+
+                        LatLng marker = new LatLng(firstPosition, secondPosition);
+                        afegirMarcador(marker, "Location" + i);
+                    }
+
+
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         CameraPosition camPosition = new CameraPosition.Builder()
-                .target(reus)
-                .zoom(15)
+                .target(new LatLng(41.1504625, 1.0896585))
+                .zoom(10)
                 .bearing(0)
                 .tilt(5)
                 .build();
@@ -81,7 +131,7 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
         mMap.addMarker(new MarkerOptions()
                 .position(latitudLongitud)
                 .title(titol)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.skateicon)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.markerinicial)));
     }
 
 
@@ -101,8 +151,10 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
         } else if (view.getId() == R.id.ibWorld) {
             homepage = new Intent(MapsMainActivity.this, WorldActivity.class);
             startActivity(homepage);
+        } else if (view.getId() == R.id.ibChat) {
+            homepage = new Intent(MapsMainActivity.this, ChatActivity.class);
+            startActivity(homepage);
         }
-
 
 
     }

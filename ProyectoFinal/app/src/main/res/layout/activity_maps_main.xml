@@ -16,7 +16,7 @@
     <RadioGroup
         android:id="@+id/radio_group_list_selector"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_height="400dp"
         android:layout_gravity="right"
         android:orientation="vertical"
         android:padding="4dp">
@@ -29,6 +29,19 @@
             android:background="@null"
             android:src="@drawable/shopicon" />
 
+        <TextView
+            android:id="@+id/tvTexto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ibShop"
+            android:layout_centerInParent="true"
+            android:clickable="false"
+            android:gravity="center"
+            android:text="Tienda"
+            android:textColor="#ffff"
+            android:textStyle="bold" />
+
+
         <ImageButton
             android:id="@+id/ibSkate"
             android:layout_width="wrap_content"
@@ -37,6 +50,18 @@
             android:background="@null"
             android:gravity="center_horizontal|center_vertical"
             android:src="@drawable/skateicon" />
+
+        <TextView
+            android:id="@+id/tvTexto2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ibShop"
+            android:layout_centerInParent="true"
+            android:clickable="false"
+            android:gravity="center"
+            android:text="Skates"
+            android:textColor="#ffff"
+            android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/ibNews"
@@ -47,6 +72,18 @@
             android:gravity="center_horizontal|center_vertical"
             android:src="@drawable/newsicon" />
 
+        <TextView
+            android:id="@+id/tvTexto3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ibShop"
+            android:layout_centerInParent="true"
+            android:clickable="false"
+            android:gravity="center"
+            android:text="Noticias"
+            android:textColor="#ffff"
+            android:textStyle="bold" />
+
         <ImageButton
             android:id="@+id/ibWorld"
             android:layout_width="wrap_content"
@@ -55,5 +92,38 @@
             android:background="@null"
             android:gravity="center_horizontal|center_vertical"
             android:src="@drawable/worldicon" />
+
+        <TextView
+            android:id="@+id/tvTexto4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ibShop"
+            android:layout_centerInParent="true"
+            android:clickable="false"
+            android:gravity="center"
+            android:text="Conexión"
+            android:textColor="#ffff"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/ibChat"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center_horizontal|center_vertical"
+            android:src="@drawable/chaticon" />
+
+        <TextView
+            android:id="@+id/tvTexto5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ibShop"
+            android:layout_centerInParent="true"
+            android:clickable="false"
+            android:gravity="center"
+            android:text="Chat"
+            android:textColor="#ffff"
+            android:textStyle="bold" />
     </RadioGroup>
 </FrameLayout>

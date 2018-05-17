@@ -6,11 +6,20 @@
     android:layout_height="match_parent"
     tools:context="org.insbaixcamp.proyectofinal.SkateActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SKATE"
-        tools:layout_editor_absoluteX="136dp"
-        tools:layout_editor_absoluteY="150dp" />
+    <in.goodiebag.carouselpicker.CarouselPicker
+        android:id="@+id/carousel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+
+        app:items_visible="three"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </in.goodiebag.carouselpicker.CarouselPicker>
 </android.support.constraint.ConstraintLayout>
+

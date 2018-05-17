@@ -50,20 +50,20 @@
             android:name=".MapsMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".SkateActivity" />
-
+        <activity
+            android:name=".SkateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ShopActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".NewsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".WorldActivity" />
+        <activity android:name=".ChatActivity"></activity>
     </application>
 
 </manifest>

@@ -43,11 +43,11 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         ref = database.getReference("Users/" + username + "/data");
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd", Locale.getDefault());
         final Date date = new Date();
         final String fecha = dateFormat.format(date);
 
-        ref.push().setValue(fecha + " " + date);
+        ref.push().setValue(fecha);
 
         //Device ID
         //Secure.getString(this.getContentResolver(),Secure.ANDROID_ID);
