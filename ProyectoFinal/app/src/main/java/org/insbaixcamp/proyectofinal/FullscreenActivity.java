@@ -1,18 +1,10 @@
 package org.insbaixcamp.proyectofinal;
 
 
-
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.google.firebase.database.ChildEventListener;
@@ -22,7 +14,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -31,6 +25,7 @@ import static android.os.SystemClock.sleep;
 
 
 public class FullscreenActivity extends AppCompatActivity implements ValueEventListener, ChildEventListener {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +36,8 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
         final ProgressBar progressBar = findViewById(R.id.determinateBar);
 
         Timer timer = new Timer();
+
+
 
         //Device ID
         //Secure.getString(this.getContentResolver(),Secure.ANDROID_ID);
