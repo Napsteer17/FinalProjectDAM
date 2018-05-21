@@ -1,10 +1,18 @@
 package org.insbaixcamp.proyectofinal;
 
 
+
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.google.firebase.database.ChildEventListener;
@@ -14,9 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,9 +31,6 @@ import static android.os.SystemClock.sleep;
 
 
 public class FullscreenActivity extends AppCompatActivity implements ValueEventListener, ChildEventListener {
-    boolean addId = true;
-    protected String username;
-    DatabaseReference ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +41,6 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
         final ProgressBar progressBar = findViewById(R.id.determinateBar);
 
         Timer timer = new Timer();
-
-        setupUsername();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        ref = database.getReference("Users/" + username + "/data");
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd", Locale.getDefault());
-        final Date date = new Date();
-        final String fecha = dateFormat.format(date);
-
-        ref.push().setValue(fecha);
 
         //Device ID
         //Secure.getString(this.getContentResolver(),Secure.ANDROID_ID);
@@ -111,16 +104,5 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
     @Override
     public void onCancelled(DatabaseError databaseError) {
 
-    }
-
-    private void setupUsername() {
-        SharedPreferences prefs = getApplication().getSharedPreferences("ToDoPrefs", 0);
-        String username = prefs.getString("username", null);
-        if (username == null) {
-            Random r = new Random();
-            username = "AndroidUser" + r.nextInt(100000);
-            prefs.edit().putString("username", username).commit();
-        }
-        this.username = prefs.getString("username", null);
     }
 }

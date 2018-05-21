@@ -22,4 +22,5 @@
         completions."
     </string>
     <string name="title_activity_signup">Sign up</string>
+    <string name="msg_add_element">Add element</string>
 </resources>
