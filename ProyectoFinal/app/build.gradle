@@ -34,8 +34,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:21.0.+'
     //Carousel SkateActivity
     implementation 'com.github.Vatican-Cameos:CarouselPicker:v1.0'
-    //button
-    implementation 'me.spark:submitbutton:1.0.1'
 
 }
 

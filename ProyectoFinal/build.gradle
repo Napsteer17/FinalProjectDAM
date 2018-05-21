@@ -21,8 +21,6 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
-        //button
-        maven { url 'https://dl.bintray.com/spark/maven'}
     }
 }
 

@@ -1,56 +1,39 @@
 package org.insbaixcamp.proyectofinal;
 
-import android.content.pm.ActivityInfo;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.spark.submitbutton.SubmitButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import in.goodiebag.carouselpicker.CarouselPicker;
 
-public class SkateActivity extends AppCompatActivity implements View.OnClickListener {
-    CarouselPicker imageCarousel;
-    TextView tvSelected;
-    SubmitButton smButton;
-    int positionSelected=0;
-    String[] arrayMarkers={"base", "modelo1", "modelo3","modelo4","modelo5","modelo7","modelo8","modelo6"};
+public class SkateActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_skate);
-        imageCarousel = (CarouselPicker) findViewById(R.id.imageCarousel);
-        tvSelected = (TextView) findViewById(R.id.tvSelectedItem);
-        smButton= findViewById(R.id.btn3);
 
+        CarouselPicker carouselPicker = (CarouselPicker) findViewById(R.id.carousel);
+
+// Case 1 : To populate the picker with images
         List<CarouselPicker.PickerItem> imageItems = new ArrayList<>();
         imageItems.add(new CarouselPicker.DrawableItem(R.drawable.base));
         imageItems.add(new CarouselPicker.DrawableItem(R.drawable.modelo1));
-        //  imageItems.add(new CarouselPicker.DrawableItem(R.drawable.modelo2));
         imageItems.add(new CarouselPicker.DrawableItem(R.drawable.modelo3));
         imageItems.add(new CarouselPicker.DrawableItem(R.drawable.modelo4));
         imageItems.add(new CarouselPicker.DrawableItem(R.drawable.modelo5));
         imageItems.add(new CarouselPicker.DrawableItem(R.drawable.modelo7));
         imageItems.add(new CarouselPicker.DrawableItem(R.drawable.modelo8));
         imageItems.add(new CarouselPicker.DrawableItem(R.drawable.modelo6));
+//Create an adapter
         CarouselPicker.CarouselViewAdapter imageAdapter = new CarouselPicker.CarouselViewAdapter(this, imageItems, 0);
-        imageCarousel.setAdapter(imageAdapter);
-        smButton.setOnClickListener(this);
+//Set the adapter
+        carouselPicker.setAdapter(imageAdapter);
 
-        imageCarousel.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        carouselPicker.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -58,10 +41,7 @@ public class SkateActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onPageSelected(int position) {
-                //tvSelected.setText("has seleccionado la tabla nº: "+position+1);
-                Toast.makeText(SkateActivity.this,position+"",Toast.LENGTH_LONG).show();
-                positionSelected=position;
-
+                //position of the selected item
             }
 
             @Override
@@ -70,27 +50,5 @@ public class SkateActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-    }
-
-    @Override
-    public void onClick(View view) {
-        if(view.getId()== R.id.btn3){
-            FirebaseDatabase database=FirebaseDatabase.getInstance();
-            DatabaseReference refMarker= database.getReference("Markers");
-
-            refMarker.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-        }
     }
 }

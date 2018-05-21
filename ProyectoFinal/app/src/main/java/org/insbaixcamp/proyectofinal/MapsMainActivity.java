@@ -1,11 +1,16 @@
 package org.insbaixcamp.proyectofinal;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -23,13 +28,19 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static android.os.SystemClock.sleep;
 
 public class MapsMainActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener {
 
@@ -39,9 +50,10 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
     ImageButton imageNews;
     ImageButton imageWorld;
     ImageButton imageChat;
-    protected String username;
+    public String user;
     DatabaseReference ref;
-    String[] arrayMarkers={"base", "modelo1", "modelo3","modelo4","modelo5","modelo7","modelo8","modelo6"};
+    FirebaseDatabase database;
+    boolean existUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,140 +74,6 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
         imageNews.setOnClickListener(this);
         imageWorld.setOnClickListener(this);
         imageChat.setOnClickListener(this);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd", Locale.getDefault());
-        final Date date = new Date();
-        final String fecha = dateFormat.format(date);
-
-        setupUsername();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        ref = database.getReference("Users");
-
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild(username)){
-                    Log.i("YA", "YA TIENE CREADO TABLAS");
-                    ref = database.getReference("Users/" + username + "/data");
-
-                    Query lastQuery = ref.orderByKey().limitToLast(1);
-                    lastQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String message = dataSnapshot.getValue().toString();
-                            String number = message.substring(22, 24);
-                            Log.i("Fecha: " + fecha, "NumeroFirebase: " + number);
-                            if (number.equals(fecha)) {
-                                Toast.makeText(MapsMainActivity.this, "HOY YA TE HAS CONECTADO", Toast.LENGTH_LONG).show();
-
-
-                            } else {
-                                Toast.makeText(MapsMainActivity.this, "BIENVENIDO POR PRIMERA VEZ HOY", Toast.LENGTH_LONG).show();
-                                ref.push().setValue(fecha);
-
-                                Random random = new Random();
-                                int randomInt = random.nextInt(31) + 1;
-
-                                if (randomInt <= 15) {
-                                    FirebaseDatabase database2 = FirebaseDatabase.getInstance();
-                                    ref = database2.getReference("Users/" + username + "/unlockedTables");
-                                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            FirebaseDatabase database3 = FirebaseDatabase.getInstance();
-                                            String count = dataSnapshot.child("counter").getValue().toString();
-                                            int counter = Integer.parseInt(count) + 1;
-                                            ref = database3.getReference("Users/" + username + "/unlockedTables/table" + count);
-                                            ref.setValue(1);
-
-                                            ref = database3.getReference("Users/" + username + "/unlockedTables/counter");
-                                            ref.setValue(counter);
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-                                    Toast.makeText(MapsMainActivity.this, "PREMIO PARA TI", Toast.LENGTH_LONG).show();
-                                } else {
-                                    Toast.makeText(MapsMainActivity.this, "PRUEBA OTRO DIA", Toast.LENGTH_LONG).show();
-                                }
-
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
-
-                }else{
-                    for (int i = 0; i < 9; i++) {
-
-                        ref = database.getReference("Users/" + username + "/unlockedTables/table" + i);
-                        ref.setValue(0);
-                    }
-                    ref = database.getReference("Users/" + username + "/unlockedTables/counter");
-                    ref.setValue(0);
-
-                    ref = database.getReference("Users/" + username + "/data");
-                    ref.push().setValue(0);
-                    ref.push().setValue(fecha);
-
-                    for (int j=0; j<arrayMarkers.length;j++){
-                        ref = database.getReference("Users/" + username + "/Markers/"+j);
-                        ref.setValue(arrayMarkers[j]);
-                    }
-                    ref = database.getReference("Users/" + username + "/Markers/counter");
-                    ref.setValue(0);
-
-                    //AHORA EL GETKEY ES data
-
-                    Toast.makeText(MapsMainActivity.this, "BIENVENIDO POR PRIMERA VEZ HOY", Toast.LENGTH_LONG).show();
-
-
-                    Random random = new Random();
-                    int randomInt = random.nextInt(31) + 1;
-
-                    if (randomInt <= 15) {
-                        ref = database.getReference("Users/" + username + "/unlockedTables");
-                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                String count = dataSnapshot.child("counter").getValue().toString();
-                                int counter = Integer.parseInt(count) + 1;
-                                ref = database.getReference("Users/" + username + "/unlockedTables/table" + count);
-                                ref.setValue(1);
-
-                                ref = database.getReference("Users/" + username + "/unlockedTables/counter");
-                                ref.setValue(counter);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                        Toast.makeText(MapsMainActivity.this, "PREMIO PARA TI", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MapsMainActivity.this, "PRUEBA OTRO DIA", Toast.LENGTH_LONG).show();
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
     }
 
 
@@ -211,8 +89,10 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        database = FirebaseDatabase.getInstance();
 
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        showChangeLangDialog();
+
         final DatabaseReference myRef = database.getReference();
 
         myRef.addChildEventListener(new ChildEventListener() {
@@ -298,21 +178,87 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
             homepage = new Intent(MapsMainActivity.this, WorldActivity.class);
             startActivity(homepage);
         } else if (view.getId() == R.id.ibChat) {
-            homepage = new Intent(MapsMainActivity.this, ChatActivity.class);
-            startActivity(homepage);
+            Intent i = new Intent (MapsMainActivity.this, ChatActivity.class);
+            i.putExtra("user", user);
+            startActivity(i);
         }
-
-
     }
 
-    private void setupUsername() {
-        SharedPreferences prefs = getApplication().getSharedPreferences("ToDoPrefs", 0);
-        String username = prefs.getString("username", null);
-        if (username == null) {
-            Random r = new Random();
-            username = "AndroidUser" + r.nextInt(100000);
-            prefs.edit().putString("username", username).commit();
+    private void writeOnFile(String user){
+        try
+        {
+            OutputStreamWriter escrituraEnDisco = new OutputStreamWriter(openFileOutput("user.txt", Context.MODE_PRIVATE));
+            escrituraEnDisco.write(user);
+            escrituraEnDisco.close();
         }
-        this.username = prefs.getString("username", null);
+        catch (Exception ex)
+        {
+            Log.e("Ficheros", "Error al escribir fichero a memoria interna");
+        }
+    }
+
+    private void setupUsername(String user) {
+
+        SharedPreferences prefs = getApplication().getSharedPreferences("ToDoPrefs", 0);
+
+        if (user == null) {
+            //Random r = new Random();
+            //username = "AndroidUser" + r.nextInt(100000);
+            prefs.edit().putString("username", user).commit();
+        }
+        //user = prefs.getString("username", user);
+
+        ref = database.getReference("Users/" + user + "/data");
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd", Locale.getDefault());
+        final Date date = new Date();
+        final String fecha = dateFormat.format(date);
+
+        ref.push().setValue(fecha);
+    }
+
+    public void ReadOnFile(){
+        try
+        {
+            BufferedReader fin = new BufferedReader(new InputStreamReader(openFileInput("user.txt")));
+
+            user = fin.readLine();
+            fin.close();
+            setupUsername(user);
+            Toast.makeText(MapsMainActivity.this, user, Toast.LENGTH_LONG).show();
+            existUser=true;
+        }
+        catch (Exception ex)
+        {
+            Log.e("Ficheros", "Error al leer fichero desde memoria interna");
+            existUser=false;
+        }
+    }
+
+    public void showChangeLangDialog() {
+
+        ReadOnFile();
+
+        if (existUser == false) {
+
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = this.getLayoutInflater();
+            final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
+            dialogBuilder.setView(dialogView);
+
+            final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
+
+            dialogBuilder.setTitle("Introduce el nombre de usuario deseado:");
+            dialogBuilder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //do something with edt.getText().toString();
+                    user = edt.getText().toString();
+                    writeOnFile(user);
+                    setupUsername(user);
+                }
+            });
+            AlertDialog b = dialogBuilder.create();
+            b.show();
+        }
     }
 }

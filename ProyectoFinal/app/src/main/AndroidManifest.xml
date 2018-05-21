@@ -62,10 +62,7 @@
             android:name=".NewsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".WorldActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".WorldActivity" />
         <activity android:name=".ChatActivity"></activity>
     </application>
 
