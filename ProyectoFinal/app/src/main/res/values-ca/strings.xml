@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">ProyectoFinal</string>
+
+    <!--MapsActivity-->
+    <string name="title_username">"Indica aquí el teu nom d'usuari:"</string>
+    <string name="title_accept">"Aceptar"</string>
+
+    <!--MapsActivity-->
+    <string name="title_shop">Tenda</string>
+    <string name="title_markers">Marcadors</string>
+    <string name="title_news">Noticies</string>
+    <string name="title_gallery">Galeria</string>
+    <string name="title_chat">Chat</string>
+
+
+    <!--SkateActivity-->
+    <string name="title_submit">Seleciona</string>
+
+    <!--GalleryActivity-->
+    <string name="title_table0">Taula de Tony hawk</string>
+    <string name="title_table1">Taula de Chris Cole</string>
+    <string name="title_table2">Taula de Cody McEntire</string>
+    <string name="title_table3">Taula de Boo Johnson</string>
+    <string name="title_table4">Taula de Nyjah Huston</string>
+    <string name="title_table5">Taula de Chris Joslin</string>
+    <string name="title_table6">Taula de Sean Malto</string>
+    <string name="title_table7">"Taula de Rodney Mullen</string>
+    <string name="title_table8">Taula de Alexis Sablone</string>
+
+    <!--ChatActivity-->
+    <string name="title_hint">"Afegeix Missatge"</string>
+
+
+</resources>

@@ -52,7 +52,7 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
 
         readOnFile();
 
-        if(existUser==false){
+        if (existUser == false) {
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
             LayoutInflater inflater = this.getLayoutInflater();
             final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
@@ -60,8 +60,8 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
 
             final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
 
-            dialogBuilder.setTitle("Introduce el nombre de usuario deseado:");
-            dialogBuilder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+            dialogBuilder.setTitle(R.string.title_username);
+            dialogBuilder.setPositiveButton(R.string.title_accept, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
                     //do something with edt.getText().toString();
@@ -100,7 +100,7 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
             });
             AlertDialog b = dialogBuilder.create();
             b.show();
-        }else{
+        } else {
             int timeout = 4;
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
@@ -130,11 +130,6 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
         }
 
 
-
-
-
-
-
     }
 
     public void readOnFile() {
@@ -150,22 +145,6 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
             existUser = false;
         }
     }
-
-
-
-    /*
-
-
---------------------------------------------------------------------
-
-
------------------------------------------------------------------------
-
-
-
-
-     */
-
 
     private void writeOnFile(String user) {
         try {

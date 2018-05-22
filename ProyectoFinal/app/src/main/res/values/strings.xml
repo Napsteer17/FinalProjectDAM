@@ -2,11 +2,16 @@
     <string name="app_name">ProyectoFinal</string>
 
     <!--MapsActivity-->
+    <string name="title_username">Insert your username here:</string>
+    <string name="title_accept">Accept</string>
+
+    <!--MapsActivity-->
     <string name="title_shop">Shop</string>
     <string name="title_markers">Markers</string>
     <string name="title_news">News</string>
     <string name="title_gallery">Gallery</string>
     <string name="title_chat">Chat</string>
+
 
     <!--SkateActivity-->
     <string name="title_submit">Submit</string>
