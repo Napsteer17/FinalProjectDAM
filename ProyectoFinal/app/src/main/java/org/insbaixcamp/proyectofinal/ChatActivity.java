@@ -63,7 +63,7 @@ public class ChatActivity extends AppCompatActivity{
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("messages");
 
-        user = getIntent().getStringExtra("user");
+        user = getIntent().getStringExtra("username");
 
         ToDo provatasca = new ToDo(user,"hola");
         listToDo.add(provatasca);

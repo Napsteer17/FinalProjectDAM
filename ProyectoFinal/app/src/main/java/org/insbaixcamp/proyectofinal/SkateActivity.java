@@ -38,8 +38,6 @@ public class SkateActivity extends AppCompatActivity implements View.OnClickList
         tvSelected = (TextView) findViewById(R.id.tvSelectedItem);
         smButton= findViewById(R.id.smButton);
 
-        setupUsername();
-
         List<CarouselPicker.PickerItem> imageItems = new ArrayList<>();
         imageItems.add(new CarouselPicker.DrawableItem(R.drawable.base));
         imageItems.add(new CarouselPicker.DrawableItem(R.drawable.modelo1));
@@ -78,6 +76,7 @@ public class SkateActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if(view.getId()== R.id.smButton){
+            username = getIntent().getStringExtra("username");
             FirebaseDatabase database=FirebaseDatabase.getInstance();
             final DatabaseReference refMarker= database.getReference("Users/" + username + "/Markers");
 
@@ -96,6 +95,7 @@ public class SkateActivity extends AppCompatActivity implements View.OnClickList
 
         }
         Intent intent=new Intent(SkateActivity.this, MapsMainActivity.class);
+        intent.putExtra("username", username);
         startActivity(intent);
     }
 

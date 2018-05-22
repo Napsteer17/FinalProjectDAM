@@ -1,6 +1,7 @@
 package org.insbaixcamp.proyectofinal;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -71,9 +73,10 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
         final Date date = new Date();
         final String fecha = dateFormat.format(date);
 
-        setupUsername();
+        username = getIntent().getStringExtra("username");
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         reference = database.getReference("Users");
+        //Log.i("USERNAME: ", username);
 
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -278,22 +281,11 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
 
     public void showChangeLangDialog() {
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
-        dialogBuilder.setView(dialogView);
-
-        final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
-
-        dialogBuilder.setTitle("Introduce el nombre de usuario deseado:");
-        dialogBuilder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                //do something with edt.getText().toString();
-                username = edt.getText().toString();
-            }
-        });
-        AlertDialog b = dialogBuilder.create();
-        b.show();
+        Dialog settingsDialog = new Dialog(this);
+        settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        settingsDialog.setContentView(getLayoutInflater().inflate(R.layout.custom_dialog
+                , null));
+        settingsDialog.show();
     }
 
     private void addMarker(final LatLng latitudLongitud) {
@@ -355,7 +347,8 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
         Intent intent = null;
 
         if (view.getId() == R.id.ibMarkers) {
-            intent = new Intent(MapsMainActivity.this, SkateActivity.class);
+            intent = new Intent (MapsMainActivity.this, SkateActivity.class);
+            intent.putExtra("username", username);
             startActivity(intent);
         } else if (view.getId() == R.id.ibNews) {
             intent = new Intent(MapsMainActivity.this, NewsActivity.class);
@@ -364,11 +357,12 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
             intent = new Intent(MapsMainActivity.this, ShopActivity.class);
             startActivity(intent);
         } else if (view.getId() == R.id.ibGallery) {
-            intent = new Intent(MapsMainActivity.this, GalleryActivity.class);
+            intent = new Intent (MapsMainActivity.this, GalleryActivity.class);
+            intent.putExtra("username", username);
             startActivity(intent);
         } else if (view.getId() == R.id.ibChat) {
             intent = new Intent (MapsMainActivity.this, ChatActivity.class);
-            intent.putExtra("user", username);
+            intent.putExtra("username", username);
             startActivity(intent);
         }
     }

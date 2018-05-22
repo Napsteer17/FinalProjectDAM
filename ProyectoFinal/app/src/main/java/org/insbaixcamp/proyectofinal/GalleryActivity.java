@@ -34,7 +34,7 @@ public class GalleryActivity extends AppCompatActivity {
         final ImageView ivImage7 = (ImageView) findViewById(R.id.ivImage7);
         final ImageView ivImage8 = (ImageView) findViewById(R.id.ivImage8);
 
-        setupUsername();
+        username = getIntent().getStringExtra("username");
         Log.i("USERNAME ", username);
         reference = database.getReference("Users/" + username + "/unlockedTables");
         reference.addValueEventListener(new ValueEventListener() {
