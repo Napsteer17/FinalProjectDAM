@@ -1,32 +1,17 @@
 package org.insbaixcamp.proyectofinal;
 
 
-
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import static android.os.SystemClock.sleep;
 
 
@@ -38,15 +23,12 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
 
         setContentView(R.layout.activity_fullscreen);
 
-        final ProgressBar progressBar = findViewById(R.id.determinateBar);
+        final ProgressBar progressBar = findViewById(R.id.loadingBar);
 
         Timer timer = new Timer();
 
-        //Device ID
-        //Secure.getString(this.getContentResolver(),Secure.ANDROID_ID);
 
-//4000
-        int timeout = 4; // make the activity visible for 4 seconds
+        int timeout = 4;
 
 
         timer.schedule(new TimerTask() {
@@ -61,14 +43,13 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
 
                     Random random = new Random();
                     int randomSleepTime = random.nextInt(100 - 10) + 65;
-                    sleep(randomSleepTime);
+                    sleep(4000);
                 }
 
                 finish();
 
-
-                Intent homepage = new Intent(FullscreenActivity.this, MapsMainActivity.class);
-                startActivity(homepage);
+                Intent intentMapsMain = new Intent(FullscreenActivity.this, MapsMainActivity.class);
+                startActivity(intentMapsMain);
 
             }
 

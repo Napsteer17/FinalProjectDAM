@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class ShopActivity extends AppCompatActivity {
 
-    ArrayList<SkateArticles> listaSkates;
+    ArrayList<SkateArticles> alSkates;
     RecyclerView rvSkates;
 
     @Override
@@ -26,93 +26,93 @@ public class ShopActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
 
-        construirRecycler();
+        buildRecyclerView();
 
     }
 
-    private void llenarSkates() {
-        listaSkates.add(new SkateArticles("Nyjah Rise Up Lion 7.75", "113,18€", R.drawable.skate1));
-        listaSkates.add(new SkateArticles("Cut Out Seal 7.7", "139,99€", R.drawable.skate2));
-        listaSkates.add(new SkateArticles("Shrapnel Tie Dye", "92,82€", R.drawable.skate3));
-        listaSkates.add(new SkateArticles("Elemento X negro ovejas 10 Año colabo sello", "107,52€", R.drawable.skate4));
-        listaSkates.add(new SkateArticles("Script Nam Palm 7.75", "129,99€", R.drawable.skate5));
-        listaSkates.add(new SkateArticles("Santa Cruz Deck Dance with Death Guzman", "81,78€", R.drawable.skate6));
-        listaSkates.add(new SkateArticles("Nyjah King 7.75", "124,99€", R.drawable.skate7));
-        listaSkates.add(new SkateArticles("Nyjah Dialed 7.7", "94,54€", R.drawable.skate8));
-        listaSkates.add(new SkateArticles("Mr. Element 04CP1Y", "104,86€", R.drawable.skate9));
-        listaSkates.add(new SkateArticles("River Camo 7.5 Assorted U", "99,00€", R.drawable.skate10));
+    private void makeSkates() {
+        alSkates.add(new SkateArticles("Nyjah Rise Up Lion 7.75", "113,18€", R.drawable.skate1));
+        alSkates.add(new SkateArticles("Cut Out Seal 7.7", "139,99€", R.drawable.skate2));
+        alSkates.add(new SkateArticles("Shrapnel Tie Dye", "92,82€", R.drawable.skate3));
+        alSkates.add(new SkateArticles("Elemento X negro ovejas 10 Año colabo sello", "107,52€", R.drawable.skate4));
+        alSkates.add(new SkateArticles("Script Nam Palm 7.75", "129,99€", R.drawable.skate5));
+        alSkates.add(new SkateArticles("Santa Cruz Deck Dance with Death Guzman", "81,78€", R.drawable.skate6));
+        alSkates.add(new SkateArticles("Nyjah King 7.75", "124,99€", R.drawable.skate7));
+        alSkates.add(new SkateArticles("Nyjah Dialed 7.7", "94,54€", R.drawable.skate8));
+        alSkates.add(new SkateArticles("Mr. Element 04CP1Y", "104,86€", R.drawable.skate9));
+        alSkates.add(new SkateArticles("River Camo 7.5 Assorted U", "99,00€", R.drawable.skate10));
 
     }
 
-    private void construirRecycler() {
-        listaSkates = new ArrayList<>();
-        rvSkates = (RecyclerView) findViewById(R.id.RecyclerId);
+    private void buildRecyclerView() {
+        alSkates = new ArrayList<>();
+        rvSkates = (RecyclerView) findViewById(R.id.rvItems);
 
 
         rvSkates.setLayoutManager(new LinearLayoutManager(this));
 
 
-        llenarSkates();
+        makeSkates();
 
-        SkateAdapter adapter = new SkateAdapter(listaSkates);
+        SkateAdapter adapter = new SkateAdapter(alSkates);
 
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseReference zonesRef = FirebaseDatabase.getInstance().getReference("Skates");
+                DatabaseReference refAllTables = FirebaseDatabase.getInstance().getReference("Skates");
 
-                int posicionTabla = rvSkates.getChildAdapterPosition(view);
+                int tablePosition = rvSkates.getChildAdapterPosition(view);
 
-                if (posicionTabla == 0) {
-                    DatabaseReference zone1Ref = zonesRef.child("Skate-Completo-Element-Nyjah-Rise");
-                    final String nombreTabla = zone1Ref.getKey();
+                if (tablePosition == 0) {
+                    DatabaseReference reference = refAllTables.child("Skate-Completo-Element-Nyjah-Rise");
+                    final String tableName = reference.getKey();
 
-                    makeListener(zone1Ref, nombreTabla);
-                } else if (posicionTabla == 1) {
-                    DatabaseReference zone1Ref = zonesRef.child("Skate-Completo-Element-Cut-Sea");
-                    final String nombreTabla = zone1Ref.getKey();
+                    makeListener(reference, tableName);
+                } else if (tablePosition == 1) {
+                    DatabaseReference reference = refAllTables.child("Skate-Completo-Element-Cut-Sea");
+                    final String tableName = reference.getKey();
 
-                    makeListener(zone1Ref, nombreTabla);
-                } else if (posicionTabla == 2) {
-                    DatabaseReference zone1Ref = zonesRef.child("Bullet-Skateboard-Complete-Shrapnel-BULDEKSHTD");
-                    final String nombreTabla = zone1Ref.getKey();
+                    makeListener(reference, tableName);
+                } else if (tablePosition == 2) {
+                    DatabaseReference reference = refAllTables.child("Bullet-Skateboard-Complete-Shrapnel-BULDEKSHTD");
+                    final String tableName = reference.getKey();
 
-                    makeListener(zone1Ref, nombreTabla);
-                } else if (posicionTabla == 3) {
-                    DatabaseReference zone1Ref = zonesRef.child("Elemento-ovejas-10-A%C3%B1o-Complete-Exclusivo");
-                    final String nombreTabla = zone1Ref.getKey();
+                    makeListener(reference, tableName);
+                } else if (tablePosition == 3) {
+                    DatabaseReference reference = refAllTables.child("Elemento-ovejas-10-A%C3%B1o-Complete-Exclusivo");
+                    final String tableName = reference.getKey();
 
-                    makeListener(zone1Ref, nombreTabla);
-                } else if (posicionTabla == 4) {
-                    DatabaseReference zone1Ref = zonesRef.child("Skate-Completo-Element-Script-Palm");
-                    final String nombreTabla = zone1Ref.getKey();
+                    makeListener(reference, tableName);
+                } else if (tablePosition == 4) {
+                    DatabaseReference reference = refAllTables.child("Skate-Completo-Element-Script-Palm");
+                    final String tableName = reference.getKey();
 
-                    makeListener(zone1Ref, nombreTabla);
-                } else if (posicionTabla == 5) {
-                    DatabaseReference zone1Ref = zonesRef.child("Santa-Cruz-Dance-Guzman-32-9-pulgadas");
-                    final String nombreTabla = zone1Ref.getKey();
+                    makeListener(reference, tableName);
+                } else if (tablePosition == 5) {
+                    DatabaseReference reference = refAllTables.child("Santa-Cruz-Dance-Guzman-32-9-pulgadas");
+                    final String tableName = reference.getKey();
 
-                    makeListener(zone1Ref, nombreTabla);
-                } else if (posicionTabla == 6) {
-                    DatabaseReference zone1Ref = zonesRef.child("Skate-Completo-Element-Nyjah-King");
-                    final String nombreTabla = zone1Ref.getKey();
+                    makeListener(reference, tableName);
+                } else if (tablePosition == 6) {
+                    DatabaseReference reference = refAllTables.child("Skate-Completo-Element-Nyjah-King");
+                    final String tableName = reference.getKey();
 
-                    makeListener(zone1Ref, nombreTabla);
-                } else if (posicionTabla == 7) {
-                    DatabaseReference zone1Ref = zonesRef.child("Skate-Completo-Element-Nyjah-Dialed");
-                    final String nombreTabla = zone1Ref.getKey();
+                    makeListener(reference, tableName);
+                } else if (tablePosition == 7) {
+                    DatabaseReference reference = refAllTables.child("Skate-Completo-Element-Nyjah-Dialed");
+                    final String tableName = reference.getKey();
 
-                    makeListener(zone1Ref, nombreTabla);
-                } else if (posicionTabla == 8) {
-                    DatabaseReference zone1Ref = zonesRef.child("Element-04CP1Y-Complete-Skateboard");
-                    final String nombreTabla = zone1Ref.getKey();
+                    makeListener(reference, tableName);
+                } else if (tablePosition == 8) {
+                    DatabaseReference reference = refAllTables.child("Element-04CP1Y-Complete-Skateboard");
+                    final String tableName = reference.getKey();
 
-                    makeListener(zone1Ref, nombreTabla);
-                } else if (posicionTabla == 9) {
-                    DatabaseReference zone1Ref = zonesRef.child("ELEMENT-River-Camo-7-5-Assorted");
-                    final String nombreTabla = zone1Ref.getKey();
+                    makeListener(reference, tableName);
+                } else if (tablePosition == 9) {
+                    DatabaseReference reference = refAllTables.child("ELEMENT-River-Camo-7-5-Assorted");
+                    final String tableName = reference.getKey();
 
-                    makeListener(zone1Ref, nombreTabla);
+                    makeListener(reference, tableName);
                 }
             }
         });
@@ -120,12 +120,12 @@ public class ShopActivity extends AppCompatActivity {
         rvSkates.setAdapter(adapter);
     }
 
-    public void makeListener(DatabaseReference dbReference, final String nombreTabla) {
+    public void makeListener(DatabaseReference dbReference, final String tableName) {
         dbReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String codigoTabla = dataSnapshot.getValue(String.class);
-                String URLToGo = "https://www.amazon.es/" + String.valueOf(nombreTabla) + "/dp/" + codigoTabla;
+                String tableCode = dataSnapshot.getValue(String.class);
+                String URLToGo = "https://www.amazon.es/" + String.valueOf(tableName) + "/dp/" + tableCode+"?t=sk80b-21";
 
                 Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(URLToGo));
                 startActivity(browserIntent);

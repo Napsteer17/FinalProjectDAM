@@ -1,12 +1,11 @@
 package org.insbaixcamp.proyectofinal;
 
-import android.content.Context;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,32 +27,25 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import static android.os.SystemClock.sleep;
 
 public class MapsMainActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener {
 
     private GoogleMap mMap;
-    ImageButton imageSkate;
+    ImageButton imageMarkers;
     ImageButton imageShop;
     ImageButton imageNews;
-    ImageButton imageWorld;
+    ImageButton imageGallery;
     ImageButton imageChat;
-    public String user;
-    DatabaseReference ref;
-    FirebaseDatabase database;
-    boolean existUser;
+    protected String username;
+    DatabaseReference reference;
+    String[] arrayMarkers = {"markerinicial", "marcador1", "marcador2", "marcador3", "marcador4", "marcador5", "marcador6", "marcador7"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,17 +55,151 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        imageSkate = findViewById(R.id.ibSkate);
+        imageMarkers = findViewById(R.id.ibMarkers);
         imageShop = findViewById(R.id.ibShop);
         imageNews = findViewById(R.id.ibNews);
-        imageWorld = findViewById(R.id.ibWorld);
+        imageGallery = findViewById(R.id.ibGallery);
         imageChat = findViewById(R.id.ibChat);
 
-        imageSkate.setOnClickListener(this);
+        imageMarkers.setOnClickListener(this);
         imageShop.setOnClickListener(this);
         imageNews.setOnClickListener(this);
-        imageWorld.setOnClickListener(this);
+        imageGallery.setOnClickListener(this);
         imageChat.setOnClickListener(this);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd", Locale.getDefault());
+        final Date date = new Date();
+        final String fecha = dateFormat.format(date);
+
+        setupUsername();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        reference = database.getReference("Users");
+
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(username)) {
+                    Log.i("YA", "YA TIENE CREADO TABLAS");
+                    reference = database.getReference("Users/" + username + "/data");
+
+                    Query lastQuery = reference.orderByKey().limitToLast(1);
+                    lastQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String message = dataSnapshot.getValue().toString();
+                            String number = message.substring(22, 24);
+                            Log.i("Fecha: " + fecha, "NumeroFirebase: " + number);
+                            if (number.equals(fecha)) {
+                                Toast.makeText(MapsMainActivity.this, "HOY YA TE HAS CONECTADO", Toast.LENGTH_LONG).show();
+
+
+                            } else {
+                                Toast.makeText(MapsMainActivity.this, "BIENVENIDO POR PRIMERA VEZ HOY", Toast.LENGTH_LONG).show();
+                                reference.push().setValue(fecha);
+
+                                Random random = new Random();
+                                int randomInt = random.nextInt(31) + 1;
+
+                                if (randomInt <= 15) {
+                                    FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+                                    reference = database2.getReference("Users/" + username + "/unlockedTables");
+                                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            FirebaseDatabase database3 = FirebaseDatabase.getInstance();
+                                            String count = dataSnapshot.child("counter").getValue().toString();
+                                            int counter = Integer.parseInt(count) + 1;
+                                            reference = database3.getReference("Users/" + username + "/unlockedTables/table" + count);
+                                            reference.setValue(1);
+
+                                            reference = database3.getReference("Users/" + username + "/unlockedTables/counter");
+                                            reference.setValue(counter);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                    showChangeLangDialog();
+                                    Toast.makeText(MapsMainActivity.this, "PREMIO PARA TI", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(MapsMainActivity.this, "PRUEBA OTRO DIA", Toast.LENGTH_LONG).show();
+                                }
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+                } else {
+                    for (int i = 0; i < 9; i++) {
+
+                        reference = database.getReference("Users/" + username + "/unlockedTables/table" + i);
+                        reference.setValue(0);
+                    }
+                    reference = database.getReference("Users/" + username + "/unlockedTables/counter");
+                    reference.setValue(0);
+
+                    reference = database.getReference("Users/" + username + "/data");
+                    reference.push().setValue(0);
+                    reference.push().setValue(fecha);
+
+                    for (int j = 0; j < arrayMarkers.length; j++) {
+                        reference = database.getReference("Users/" + username + "/Markers/" + j);
+                        reference.setValue(arrayMarkers[j]);
+                    }
+                    reference = database.getReference("Users/" + username + "/Markers/counter");
+                    reference.setValue(0);
+
+                    Toast.makeText(MapsMainActivity.this, "BIENVENIDO POR PRIMERA VEZ HOY", Toast.LENGTH_LONG).show();
+
+
+                    Random random = new Random();
+                    int randomInt = random.nextInt(31) + 1;
+
+                    if (randomInt <= 15) {
+                        reference = database.getReference("Users/" + username + "/unlockedTables");
+                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String count = dataSnapshot.child("counter").getValue().toString();
+                                int counter = Integer.parseInt(count) + 1;
+                                reference = database.getReference("Users/" + username + "/unlockedTables/table" + count);
+                                reference.setValue(1);
+
+                                reference = database.getReference("Users/" + username + "/unlockedTables/counter");
+                                reference.setValue(counter);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        showChangeLangDialog();
+                        Toast.makeText(MapsMainActivity.this, "PREMIO PARA TI", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(MapsMainActivity.this, "PRUEBA OTRO DIA", Toast.LENGTH_LONG).show();
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
 
@@ -89,20 +215,18 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        database = FirebaseDatabase.getInstance();
 
-        showChangeLangDialog();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference referenceMarkers = database.getReference();
 
-        final DatabaseReference myRef = database.getReference();
-
-        myRef.addChildEventListener(new ChildEventListener() {
+        referenceMarkers.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String laKey = dataSnapshot.getKey();
+                String nameKey = dataSnapshot.getKey();
                 int countMarkers = (int) dataSnapshot.getChildrenCount();
-                Log.e("-" + laKey + "-", countMarkers + "");
+                Log.e("-" + nameKey + "-", countMarkers + "");
 
-                if (laKey.equals("Locations")) {
+                if (nameKey.equals("Locations")) {
 
                     for (int i = 0; i < countMarkers; i++) {
 
@@ -110,7 +234,7 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
                         double secondPosition = (double) dataSnapshot.child("Location" + i).child("1").getValue();
 
                         LatLng marker = new LatLng(firstPosition, secondPosition);
-                        afegirMarcador(marker, "Location" + i);
+                        addMarker(marker);
                     }
 
 
@@ -152,113 +276,111 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
         mMap.animateCamera(camUpdate);
     }
 
-    private void afegirMarcador(LatLng latitudLongitud, String titol) {
-        // Possibles colors: HUE_RED, HUE_AZURE, HUE_BLUE, HUE_CYAN, HUE_GREEN, HUE_MAGENTA, HUE_ORANGEHUE_ROSE, HUE_VIOLET, HUE_YELLOW
-        mMap.addMarker(new MarkerOptions()
-                .position(latitudLongitud)
-                .title(titol)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.markerinicial)));
+    public void showChangeLangDialog() {
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
+
+        dialogBuilder.setTitle("Introduce el nombre de usuario deseado:");
+        dialogBuilder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //do something with edt.getText().toString();
+                username = edt.getText().toString();
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
+    private void addMarker(final LatLng latitudLongitud) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("Users/" + username + "/Markers");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String valueMarker = dataSnapshot.child("counter").getValue().toString();
+                String nameMarker = dataSnapshot.child(valueMarker).getValue().toString();
+
+                if (nameMarker.equals("markerinicial")) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latitudLongitud)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.markerinicial)));
+                } else if (nameMarker.equals("marcador1")) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latitudLongitud)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marcador1)));
+                } else if (nameMarker.equals("marcador2")) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latitudLongitud)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marcador2)));
+                } else if (nameMarker.equals("marcador3")) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latitudLongitud)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marcador3)));
+                } else if (nameMarker.equals("marcador4")) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latitudLongitud)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marcador4)));
+                } else if (nameMarker.equals("marcador5")) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latitudLongitud)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marcador5)));
+                } else if (nameMarker.equals("marcador6")) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latitudLongitud)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marcador6)));
+                } else if (nameMarker.equals("marcador7")) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latitudLongitud)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marcador7)));
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
     @Override
     public void onClick(View view) {
-        Intent homepage = null;
+        Intent intent = null;
 
-        if (view.getId() == R.id.ibSkate) {
-            homepage = new Intent(MapsMainActivity.this, SkateActivity.class);
-            startActivity(homepage);
+        if (view.getId() == R.id.ibMarkers) {
+            intent = new Intent(MapsMainActivity.this, SkateActivity.class);
+            startActivity(intent);
         } else if (view.getId() == R.id.ibNews) {
-            homepage = new Intent(MapsMainActivity.this, NewsActivity.class);
-            startActivity(homepage);
+            intent = new Intent(MapsMainActivity.this, NewsActivity.class);
+            startActivity(intent);
         } else if (view.getId() == R.id.ibShop) {
-            homepage = new Intent(MapsMainActivity.this, ShopActivity.class);
-            startActivity(homepage);
-        } else if (view.getId() == R.id.ibWorld) {
-            homepage = new Intent(MapsMainActivity.this, WorldActivity.class);
-            startActivity(homepage);
+            intent = new Intent(MapsMainActivity.this, ShopActivity.class);
+            startActivity(intent);
+        } else if (view.getId() == R.id.ibGallery) {
+            intent = new Intent(MapsMainActivity.this, GalleryActivity.class);
+            startActivity(intent);
         } else if (view.getId() == R.id.ibChat) {
-            Intent i = new Intent (MapsMainActivity.this, ChatActivity.class);
-            i.putExtra("user", user);
-            startActivity(i);
+            intent = new Intent (MapsMainActivity.this, ChatActivity.class);
+            intent.putExtra("user", username);
+            startActivity(intent);
         }
     }
 
-    private void writeOnFile(String user){
-        try
-        {
-            OutputStreamWriter escrituraEnDisco = new OutputStreamWriter(openFileOutput("user.txt", Context.MODE_PRIVATE));
-            escrituraEnDisco.write(user);
-            escrituraEnDisco.close();
-        }
-        catch (Exception ex)
-        {
-            Log.e("Ficheros", "Error al escribir fichero a memoria interna");
-        }
-    }
-
-    private void setupUsername(String user) {
-
+    private void setupUsername() {
         SharedPreferences prefs = getApplication().getSharedPreferences("ToDoPrefs", 0);
-
-        if (user == null) {
-            //Random r = new Random();
-            //username = "AndroidUser" + r.nextInt(100000);
-            prefs.edit().putString("username", user).commit();
+        String username = prefs.getString("username", null);
+        if (username == null) {
+            Random r = new Random();
+            username = "AndroidUser" + r.nextInt(100000);
+            prefs.edit().putString("username", username).commit();
         }
-        //user = prefs.getString("username", user);
-
-        ref = database.getReference("Users/" + user + "/data");
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd", Locale.getDefault());
-        final Date date = new Date();
-        final String fecha = dateFormat.format(date);
-
-        ref.push().setValue(fecha);
-    }
-
-    public void ReadOnFile(){
-        try
-        {
-            BufferedReader fin = new BufferedReader(new InputStreamReader(openFileInput("user.txt")));
-
-            user = fin.readLine();
-            fin.close();
-            setupUsername(user);
-            Toast.makeText(MapsMainActivity.this, user, Toast.LENGTH_LONG).show();
-            existUser=true;
-        }
-        catch (Exception ex)
-        {
-            Log.e("Ficheros", "Error al leer fichero desde memoria interna");
-            existUser=false;
-        }
-    }
-
-    public void showChangeLangDialog() {
-
-        ReadOnFile();
-
-        if (existUser == false) {
-
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-            LayoutInflater inflater = this.getLayoutInflater();
-            final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
-            dialogBuilder.setView(dialogView);
-
-            final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
-
-            dialogBuilder.setTitle("Introduce el nombre de usuario deseado:");
-            dialogBuilder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    //do something with edt.getText().toString();
-                    user = edt.getText().toString();
-                    writeOnFile(user);
-                    setupUsername(user);
-                }
-            });
-            AlertDialog b = dialogBuilder.create();
-            b.show();
-        }
+        this.username = prefs.getString("username", null);
     }
 }

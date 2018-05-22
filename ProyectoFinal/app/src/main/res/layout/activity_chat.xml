@@ -73,7 +73,7 @@
                     android:id="@+id/editTextItem"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/msg_add_element" />
+                    android:hint="@string/title_hint" />
 
             </android.support.design.widget.TextInputLayout>
 

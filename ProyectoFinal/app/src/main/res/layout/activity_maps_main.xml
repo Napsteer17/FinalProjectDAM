@@ -14,7 +14,7 @@
 
 
     <RadioGroup
-        android:id="@+id/radio_group_list_selector"
+        android:id="@+id/rgMenuButtons"
         android:layout_width="wrap_content"
         android:layout_height="400dp"
         android:layout_gravity="right"
@@ -30,20 +30,20 @@
             android:src="@drawable/shopicon" />
 
         <TextView
-            android:id="@+id/tvTexto"
+            android:id="@+id/tvShop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ibShop"
             android:layout_centerInParent="true"
             android:clickable="false"
             android:gravity="center"
-            android:text="Tienda"
+            android:text="@string/title_shop"
             android:textColor="#ffff"
             android:textStyle="bold" />
 
 
         <ImageButton
-            android:id="@+id/ibSkate"
+            android:id="@+id/ibMarkers"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -52,14 +52,14 @@
             android:src="@drawable/skateicon" />
 
         <TextView
-            android:id="@+id/tvTexto2"
+            android:id="@+id/tvMarkers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ibShop"
             android:layout_centerInParent="true"
             android:clickable="false"
             android:gravity="center"
-            android:text="Skates"
+            android:text="@string/title_markers"
             android:textColor="#ffff"
             android:textStyle="bold" />
 
@@ -73,19 +73,19 @@
             android:src="@drawable/newsicon" />
 
         <TextView
-            android:id="@+id/tvTexto3"
+            android:id="@+id/tvNews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ibShop"
             android:layout_centerInParent="true"
             android:clickable="false"
             android:gravity="center"
-            android:text="Noticias"
+            android:text="@string/title_news"
             android:textColor="#ffff"
             android:textStyle="bold" />
 
         <ImageButton
-            android:id="@+id/ibWorld"
+            android:id="@+id/ibGallery"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -94,14 +94,14 @@
             android:src="@drawable/worldicon" />
 
         <TextView
-            android:id="@+id/tvTexto4"
+            android:id="@+id/tvGallery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ibShop"
             android:layout_centerInParent="true"
             android:clickable="false"
             android:gravity="center"
-            android:text="Conexión"
+            android:text="@string/title_gallery"
             android:textColor="#ffff"
             android:textStyle="bold" />
 
@@ -115,14 +115,14 @@
             android:src="@drawable/chaticon" />
 
         <TextView
-            android:id="@+id/tvTexto5"
+            android:id="@+id/tvChat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ibShop"
             android:layout_centerInParent="true"
             android:clickable="false"
             android:gravity="center"
-            android:text="Chat"
+            android:text="@string/title_chat"
             android:textColor="#ffff"
             android:textStyle="bold" />
     </RadioGroup>
