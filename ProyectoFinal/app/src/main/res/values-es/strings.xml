@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">ProyectoFinal</string>
+    <string name="app_name">Skate World</string>
 
     <!--MapsActivity-->
     <string name="title_username">Indica aquí tu nombre de usuario:</string>
-    <string name="title_accept">Acceptar</string>
+    <string name="title_accept">Aceptar</string>
 
     <!--MapsActivity-->
     <string name="title_shop">Tienda</string>
@@ -30,5 +30,9 @@
     <!--ChatActivity-->
     <string name="title_hint">"Añade Mensaje"</string>
 
-
+    <!--CustomDialogReward -->
+    <string name="title_reward_win">Has ganado</string>
+    <string name="content_reward_win">Felicidades, has desbloqueado un Skate</string>
+    <string name="title_reward_lose">Has perdido</string>
+    <string name="content_reward_lose">Lo siento, prueba otro dia</string>
 </resources>

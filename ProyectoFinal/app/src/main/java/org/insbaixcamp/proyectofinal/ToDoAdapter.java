@@ -13,10 +13,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
     public List<ToDo> toDos;
 
-    public ToDoAdapter(List<ToDo> toDos){
+    public ToDoAdapter(List<ToDo> toDos) {
         this.toDos = toDos;
     }
 
+    // Llamamos un layout para mostrar los mensajes de forma vertical
     @Override
     public ToDoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -24,6 +25,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         return new ToDoViewHolder(view);
     }
 
+    // Para mantener los mensajes ordenados
     @Override
     public void onBindViewHolder(ToDoViewHolder holder, int position) {
         ToDo item = toDos.get(position);
@@ -31,6 +33,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         holder.textViewUser.setText(item.getUser());
     }
 
+    // Para que cada mensaje sepa en donde situarse, ya que mantienen un orden
     @Override
     public int getItemCount() {
         return toDos.size();

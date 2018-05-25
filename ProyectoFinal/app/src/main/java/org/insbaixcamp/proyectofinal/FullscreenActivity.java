@@ -31,7 +31,6 @@ import static android.os.SystemClock.sleep;
 
 public class FullscreenActivity extends AppCompatActivity implements ValueEventListener, ChildEventListener {
     String username;
-    boolean go = false;
     ProgressBar progressBar;
     boolean existUser;
 
@@ -43,31 +42,35 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
 
         progressBar = findViewById(R.id.loadingBar);
 
-        showChangeLangDialog();
+        showChangeLangDialogUser();
 
 
     }
 
-    public void showChangeLangDialog() {
+    public void showChangeLangDialogUser() {
 
+        //Leemos si el archivo del usuario existe.
         readOnFile();
 
+        //Si ese usuario no existe, creamos un pop up para que permita introducir el
+        //nombre de usuario que guardaremos en Firebase.
         if (existUser == false) {
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
             LayoutInflater inflater = this.getLayoutInflater();
             final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
             dialogBuilder.setView(dialogView);
 
-            final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
+            final EditText etName = (EditText) dialogView.findViewById(R.id.etName);
 
             dialogBuilder.setTitle(R.string.title_username);
             dialogBuilder.setPositiveButton(R.string.title_accept, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
-                    //do something with edt.getText().toString();
-                    username = edt.getText().toString();
+                    username = etName.getText().toString();
                     writeOnFile(username);
 
+                    //Creamos un timer para que la barra de carga inicie. Cuando la barra se complete
+                    //nos redirige a la activity MapsMainActivity
                     int timeout = 4;
                     Timer timer = new Timer();
                     timer.schedule(new TimerTask() {
@@ -101,6 +104,8 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
             AlertDialog b = dialogBuilder.create();
             b.show();
         } else {
+            //Si el usuario existe, directamente empieza la carga de la barra y redirige
+            //a MapsMainActivity
             int timeout = 4;
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
@@ -132,27 +137,27 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
 
     }
 
+    //Comprueba si existe el archivo user.txt en el dispositivo.
     public void readOnFile() {
         try {
             BufferedReader fin = new BufferedReader(new InputStreamReader(openFileInput("user.txt")));
 
             username = fin.readLine();
             fin.close();
-            Toast.makeText(FullscreenActivity.this, username, Toast.LENGTH_LONG).show();
             existUser = true;
         } catch (Exception ex) {
-            Log.e("Ficheros", "Error al leer fichero desde memoria interna");
             existUser = false;
         }
     }
 
+    //Metodo que crea el archivo user.txt con el nombre de usuario que pasaremos por parametro.
     private void writeOnFile(String user) {
         try {
             OutputStreamWriter escrituraEnDisco = new OutputStreamWriter(openFileOutput("user.txt", Context.MODE_PRIVATE));
             escrituraEnDisco.write(user);
             escrituraEnDisco.close();
         } catch (Exception ex) {
-            Log.e("Ficheros", "Error al escribir fichero a memoria interna");
+
         }
     }
 

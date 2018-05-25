@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProyectoFinal</string>
+    <string name="app_name">Skate World</string>
 
     <!--MapsActivity-->
     <string name="title_username">Insert your username here:</string>
@@ -30,5 +30,9 @@
     <!--ChatActivity-->
     <string name="title_hint">"Add Message"</string>
 
-
+    <!--CustomDialogReward -->
+    <string name="title_reward_win">You Win</string>
+    <string name="content_reward_win">Congratulations you have unlocked a skateboard</string>
+    <string name="title_reward_lose">You Lose</string>
+    <string name="content_reward_lose">Sorry, try another day</string>
 </resources>

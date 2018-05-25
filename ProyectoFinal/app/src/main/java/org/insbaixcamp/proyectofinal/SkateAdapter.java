@@ -14,18 +14,18 @@ import java.util.ArrayList;
 
 
 public class SkateAdapter
-        extends RecyclerView.Adapter<SkateAdapter.ViewHolderPersonajes>
+        extends RecyclerView.Adapter<SkateAdapter.ViewHolderSkates>
         implements View.OnClickListener{
 
-    ArrayList<SkateArticles> listaPersonajes;
+    ArrayList<SkateArticles> listaSkates;
     private View.OnClickListener listener;
 
-    public SkateAdapter(ArrayList<SkateArticles> listaPersonajes) {
-        this.listaPersonajes = listaPersonajes;
+    public SkateAdapter(ArrayList<SkateArticles> listaSkates) {
+        this.listaSkates = listaSkates;
     }
 
     @Override
-    public ViewHolderPersonajes onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolderSkates onCreateViewHolder(ViewGroup parent, int viewType) {
         int layout=0;
         if (Utilities.visualizacion==Utilities.LIST){
             layout=R.layout.item_list_skate;
@@ -37,23 +37,23 @@ public class SkateAdapter
 
         view.setOnClickListener(this);
 
-        return new ViewHolderPersonajes(view);
+        return new ViewHolderSkates(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderPersonajes holder, int position) {
-        holder.etiNombre.setText(listaPersonajes.get(position).getNombre());
+    public void onBindViewHolder(ViewHolderSkates holder, int position) {
+        holder.etName.setText(listaSkates.get(position).getNombre());
 
         if (Utilities.visualizacion==Utilities.LIST){
-            holder.etiInformacion.setText(listaPersonajes.get(position).getInfo());
+            holder.etInfo.setText(listaSkates.get(position).getInfo());
         }
 
-        holder.foto.setImageResource(listaPersonajes.get(position).getFoto());
+        holder.foto.setImageResource(listaSkates.get(position).getFoto());
     }
 
     @Override
     public int getItemCount() {
-        return listaPersonajes.size();
+        return listaSkates.size();
     }
 
     public void setOnClickListener(View.OnClickListener listener){
@@ -67,16 +67,16 @@ public class SkateAdapter
         }
     }
 
-    public class ViewHolderPersonajes extends RecyclerView.ViewHolder {
+    public class ViewHolderSkates extends RecyclerView.ViewHolder {
 
-        TextView etiNombre,etiInformacion;
+        TextView etName,etInfo;
         ImageView foto;
 
-        public ViewHolderPersonajes(View itemView) {
+        public ViewHolderSkates(View itemView) {
             super(itemView);
-            etiNombre= (TextView) itemView.findViewById(R.id.idNombre);
+            etName= (TextView) itemView.findViewById(R.id.idNombre);
             if (Utilities.visualizacion==Utilities.LIST){
-                etiInformacion= (TextView) itemView.findViewById(R.id.idInfo);
+                etInfo= (TextView) itemView.findViewById(R.id.idInfo);
             }
             foto= (ImageView) itemView.findViewById(R.id.idImagen);
         }

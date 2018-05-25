@@ -63,6 +63,8 @@ public class ChatActivity extends AppCompatActivity{
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("messages");
 
+        //Recojemos el nombre de usuario que utilizaremos para mostrarlo junto
+        //al mensaje insertado
         user = getIntent().getStringExtra("username");
 
         ToDo provatasca = new ToDo(user,"hola");
@@ -74,7 +76,6 @@ public class ChatActivity extends AppCompatActivity{
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.getValue() != null) {
 
-                    Log.e(getLocalClassName(), snapshot.getValue().toString());
                     listToDo.removeAll(listToDo);
                     for (DataSnapshot row:
                             snapshot.getChildren()) {
@@ -82,7 +83,6 @@ public class ChatActivity extends AppCompatActivity{
 
                         listToDo.add(tasca);
                     }
-                    //Toast.makeText(MainActivity.this, listToDo.toString(), Toast.LENGTH_SHORT).show();
                     toDoAdapter.notifyDataSetChanged();
                     rv.scrollToPosition(listToDo.size()-1);
                 }
@@ -99,7 +99,7 @@ public class ChatActivity extends AppCompatActivity{
     }
 
 
-    //onclick fab button
+    //Metodo onClick para el botón de envío.
     public void enviar(View view) {
         if (lineartext.getVisibility() == View.INVISIBLE) {
             lineartext.setVisibility(View.VISIBLE);
@@ -107,6 +107,8 @@ public class ChatActivity extends AppCompatActivity{
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(caixa, InputMethodManager.SHOW_IMPLICIT);
         } else {
+
+            //si hay algo escrito lo sube al chat y lo hace visible
             if (!caixa.getText().toString().equals("")) {
                 ToDo tasca = new ToDo(user, caixa.getText().toString());
                 this.myRef.push().setValue(tasca);

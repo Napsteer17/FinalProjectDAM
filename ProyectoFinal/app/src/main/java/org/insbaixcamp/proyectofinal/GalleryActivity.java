@@ -24,6 +24,8 @@ public class GalleryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
+
+        //Inicializamos las variable que se comunican con la parte .xml
         final ImageView ivImage0 = (ImageView) findViewById(R.id.ivImage0);
         final ImageView ivImage1 = (ImageView) findViewById(R.id.ivImage1);
         final ImageView ivImage2 = (ImageView) findViewById(R.id.ivImage2);
@@ -34,46 +36,40 @@ public class GalleryActivity extends AppCompatActivity {
         final ImageView ivImage7 = (ImageView) findViewById(R.id.ivImage7);
         final ImageView ivImage8 = (ImageView) findViewById(R.id.ivImage8);
 
+        //recojemos el nombre de usuario
         username = getIntent().getStringExtra("username");
-        Log.i("USERNAME ", username);
         reference = database.getReference("Users/" + username + "/unlockedTables");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i("ENTREO: ", "ENTREO");
+
+                //Hacemos la comprobacion de que tablas tienen un valor igual a 1,
+                //lo cual implica que se muestre la tabla en el apartado de galeria.
                 if (dataSnapshot.child("table0").getValue().toString().equals("1")) {
                     ivImage0.setImageResource(R.drawable.hawk);
                 }
                 if (dataSnapshot.child("table1").getValue().toString().equals("1")) {
-                    Log.i("IGUAL A: ", "0");
                     ivImage1.setImageResource(R.drawable.chris_cole_warrior);
                 }
                 if (dataSnapshot.child("table2").getValue().toString().equals("1")) {
-                    Log.i("IGUAL A: ", "0");
                     ivImage2.setImageResource(R.drawable.centery);
                 }
                 if (dataSnapshot.child("table3").getValue().toString().equals("1")) {
-                    Log.i("IGUAL A: ", "0");
                     ivImage3.setImageResource(R.drawable.boo);
                 }
                 if (dataSnapshot.child("table4").getValue().toString().equals("1")) {
-                    Log.i("IGUAL A: ", "0");
                     ivImage4.setImageResource(R.drawable.huston);
                 }
                 if (dataSnapshot.child("table5").getValue().toString().equals("1")) {
-                    Log.i("IGUAL A: ", "0");
                     ivImage5.setImageResource(R.drawable.joslin);
                 }
                 if (dataSnapshot.child("table6").getValue().toString().equals("1")) {
-                    Log.i("IGUAL A: ", "0");
                     ivImage6.setImageResource(R.drawable.malto);
                 }
                 if (dataSnapshot.child("table7").getValue().toString().equals("1")) {
-                    Log.i("IGUAL A: ", "0");
                     ivImage7.setImageResource(R.drawable.mullen);
                 }
                 if (dataSnapshot.child("table8").getValue().toString().equals("1")) {
-                    Log.i("IGUAL A: ", "0");
                     ivImage8.setImageResource(R.drawable.sablone);
                 }
 
@@ -87,17 +83,5 @@ public class GalleryActivity extends AppCompatActivity {
         });
 
     }
-
-    private void setupUsername() {
-        SharedPreferences prefs = getApplication().getSharedPreferences("ToDoPrefs", 0);
-        String username = prefs.getString("username", null);
-        if (username == null) {
-            Random r = new Random();
-            username = "AndroidUser" + r.nextInt(100000);
-            prefs.edit().putString("username", username).commit();
-        }
-        this.username = prefs.getString("username", null);
-    }
-
 
 }

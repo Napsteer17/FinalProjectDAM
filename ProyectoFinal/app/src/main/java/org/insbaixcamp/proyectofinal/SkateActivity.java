@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,8 +26,7 @@ public class SkateActivity extends AppCompatActivity implements View.OnClickList
     TextView tvSelected;
     SubmitButton smButton;
     protected String username;
-    int positionSelected=0;
-    String[] arrayMarkers={"base", "modelo1", "modelo2","modelo3","modelo4","modelo5","modelo6","modelo7"};
+    int positionSelected = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +34,9 @@ public class SkateActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_skate);
         imageCarousel = (CarouselPicker) findViewById(R.id.imageCarousel);
         tvSelected = (TextView) findViewById(R.id.tvSelectedItem);
-        smButton= findViewById(R.id.smButton);
+        smButton = findViewById(R.id.smButton);
 
+        //Inicializamos todos los componentes que utilizaremos en nuestra actividad.
         List<CarouselPicker.PickerItem> imageItems = new ArrayList<>();
         imageItems.add(new CarouselPicker.DrawableItem(R.drawable.base));
         imageItems.add(new CarouselPicker.DrawableItem(R.drawable.modelo1));
@@ -59,9 +58,9 @@ public class SkateActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onPageSelected(int position) {
-                //tvSelected.setText("has seleccionado la tabla nº: "+position+1);
-                Toast.makeText(SkateActivity.this,position+"",Toast.LENGTH_LONG).show();
-                positionSelected=position;
+                //Cada vez que vayamos pasando una tabla, guardamos su posicion en esta variable que utilizaremos
+                //mas tarde.
+                positionSelected = position;
 
             }
 
@@ -75,14 +74,20 @@ public class SkateActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        if(view.getId()== R.id.smButton){
+        //cuando cliquemos en el boton para selecionar un diseño de marcador.
+        if (view.getId() == R.id.smButton) {
+
+            //Recojemos el valor de usuario para modificar el marcador de ese usuario en concreto.
             username = getIntent().getStringExtra("username");
-            FirebaseDatabase database=FirebaseDatabase.getInstance();
-            final DatabaseReference refMarker= database.getReference("Users/" + username + "/Markers");
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            final DatabaseReference refMarker = database.getReference("Users/" + username + "/Markers");
 
             refMarker.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    //Insertamos en el child "counter" el valor de la posicion que hemos selecionado. En el mapsMainActivity,
+                    //según el valor del child "counter", escojerá un marcador u otro, que son los valores que hemos insertado
+                    //en Firebase.
                     refMarker.child("counter").setValue(positionSelected);
                 }
 
@@ -94,19 +99,11 @@ public class SkateActivity extends AppCompatActivity implements View.OnClickList
 
 
         }
-        Intent intent=new Intent(SkateActivity.this, MapsMainActivity.class);
+        //Una vez escogido un diseño, redirigimos a MapsMainActivity para que el usuario vea su marcador
+        //modificado.
+        Intent intent = new Intent(SkateActivity.this, MapsMainActivity.class);
         intent.putExtra("username", username);
         startActivity(intent);
     }
 
-    private void setupUsername() {
-        SharedPreferences prefs = getApplication().getSharedPreferences("ToDoPrefs", 0);
-        String username = prefs.getString("username", null);
-        if (username == null) {
-            Random r = new Random();
-            username = "AndroidUser" + r.nextInt(100000);
-            prefs.edit().putString("username", username).commit();
-        }
-        this.username = prefs.getString("username", null);
-    }
 }

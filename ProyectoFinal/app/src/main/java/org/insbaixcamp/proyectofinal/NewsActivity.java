@@ -12,6 +12,7 @@ public class NewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
+        //Enlazamos el WebView de la activity con la pagina de noticias que querramos.
         wvNews=findViewById(R.id.wvNews);
         wvNews.loadUrl("http://dcshoes.es/skate/news/");
 

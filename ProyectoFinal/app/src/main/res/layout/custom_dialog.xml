@@ -1,33 +1,19 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#80000000">
-
-    <TextView
-        android:id="@+id/textView2"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:foregroundGravity="center_vertical|center_horizontal"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="¡¡¡BINGOO!!! Has desbloqueado una tabla" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/tablaincognito" />
-
-    <com.spark.submitbutton.SubmitButton
-        android:id="@+id/smButton"
-        android:layout_width="283dp"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginBottom="12dp"
-        android:foregroundGravity="center_vertical|center_horizontal"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="You Win"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
-</LinearLayout>
+        android:padding="10dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

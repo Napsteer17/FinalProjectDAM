@@ -30,6 +30,7 @@ public class ShopActivity extends AppCompatActivity {
 
     }
 
+    //inicializamos los skates para poder mostrarlos después en el RecyclerView del activity
     private void makeSkates() {
         alSkates.add(new SkateArticles("Nyjah Rise Up Lion 7.75", "113,18€", R.drawable.skate1));
         alSkates.add(new SkateArticles("Cut Out Seal 7.7", "139,99€", R.drawable.skate2));
@@ -44,6 +45,8 @@ public class ShopActivity extends AppCompatActivity {
 
     }
 
+    //Metodo que se encarga de recojer los valores de las tablas que tenemos insertado en Firebase y
+    //crear el RecyclerView que utilizamos.
     private void buildRecyclerView() {
         alSkates = new ArrayList<>();
         rvSkates = (RecyclerView) findViewById(R.id.rvItems);
@@ -63,13 +66,16 @@ public class ShopActivity extends AppCompatActivity {
 
                 int tablePosition = rvSkates.getChildAdapterPosition(view);
 
+                //dependiendo de la posición de la tabla, recojeremos el valor de un nombre u otro, para
+                //poder pasarlo mas tarde al metodo makeListener y nos permita visualizar el producto en la
+                //tienda.
                 if (tablePosition == 0) {
                     DatabaseReference reference = refAllTables.child("Skate-Completo-Element-Nyjah-Rise");
                     final String tableName = reference.getKey();
 
                     makeListener(reference, tableName);
                 } else if (tablePosition == 1) {
-                    DatabaseReference reference = refAllTables.child("Skate-Completo-Element-Cut-Sea");
+                    DatabaseReference reference = refAllTables.child("Skate-Completo-Element-Cut-Seal");
                     final String tableName = reference.getKey();
 
                     makeListener(reference, tableName);
@@ -79,7 +85,7 @@ public class ShopActivity extends AppCompatActivity {
 
                     makeListener(reference, tableName);
                 } else if (tablePosition == 3) {
-                    DatabaseReference reference = refAllTables.child("Elemento-ovejas-10-A%C3%B1o-Complete-Exclusivo");
+                    DatabaseReference reference = refAllTables.child("Elemento-ovejas-10-Año-Complete-Exclusivo");
                     final String tableName = reference.getKey();
 
                     makeListener(reference, tableName);
@@ -109,7 +115,7 @@ public class ShopActivity extends AppCompatActivity {
 
                     makeListener(reference, tableName);
                 } else if (tablePosition == 9) {
-                    DatabaseReference reference = refAllTables.child("ELEMENT-River-Camo-7-5-Assorted");
+                    DatabaseReference reference = refAllTables.child("Element-Skateboards-monopatín-camuflaje-7-5");
                     final String tableName = reference.getKey();
 
                     makeListener(reference, tableName);
@@ -120,12 +126,14 @@ public class ShopActivity extends AppCompatActivity {
         rvSkates.setAdapter(adapter);
     }
 
+    //Este metodo se encarga de recojer los valores de cada tabla organizada en Firebase, para después
+    //poder crear un enlace que redirigirá al producto en Amazon. Este lleva nuestro tag de Amazon.
     public void makeListener(DatabaseReference dbReference, final String tableName) {
         dbReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String tableCode = dataSnapshot.getValue(String.class);
-                String URLToGo = "https://www.amazon.es/" + String.valueOf(tableName) + "/dp/" + tableCode+"?t=sk80b-21";
+                String URLToGo = "https://www.amazon.es/" + String.valueOf(tableName) + "/dp/" + tableCode + "?t=sk80b-21";
 
                 Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(URLToGo));
                 startActivity(browserIntent);
