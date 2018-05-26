@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.BufferedReader;
@@ -67,36 +69,58 @@ public class FullscreenActivity extends AppCompatActivity implements ValueEventL
                 public void onClick(DialogInterface dialog, int whichButton) {
 
                     username = etName.getText().toString();
-                    writeOnFile(username);
 
-                    //Creamos un timer para que la barra de carga inicie. Cuando la barra se complete
-                    //nos redirige a la activity MapsMainActivity
-                    int timeout = 4;
-                    Timer timer = new Timer();
-                    timer.schedule(new TimerTask() {
+                    FirebaseDatabase database= FirebaseDatabase.getInstance();
+                    DatabaseReference reference=database.getReference("Users");
 
-
+                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void run() {
-                            while (progressBar.getProgress() < 100) {
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.hasChild(username)){
+                                Toast.makeText(FullscreenActivity.this, R.string.user_duplicated, Toast.LENGTH_SHORT).show();
+                                Intent intentFullScreen = new Intent(FullscreenActivity.this, FullscreenActivity.class);
+                                startActivity(intentFullScreen);
+                            }else{
+                                writeOnFile(username);
+                                //Creamos un timer para que la barra de carga inicie. Cuando la barra se complete
+                                //nos redirige a la activity MapsMainActivity
+                                int timeout = 4;
+                                Timer timer = new Timer();
+                                timer.schedule(new TimerTask() {
 
-                                progressBar.incrementProgressBy(2);
+
+                                    @Override
+                                    public void run() {
+                                        while (progressBar.getProgress() < 100) {
+
+                                            progressBar.incrementProgressBy(2);
 
 
-                                Random random = new Random();
-                                int randomSleepTime = random.nextInt(100 - 10) + 65;
-                                sleep(randomSleepTime);
+                                            Random random = new Random();
+                                            int randomSleepTime = random.nextInt(100 - 10) + 65;
+                                            sleep(randomSleepTime);
+                                        }
+
+                                        finish();
+
+                                        Intent intentMapsMain = new Intent(FullscreenActivity.this, MapsMainActivity.class);
+                                        intentMapsMain.putExtra("username", username);
+                                        startActivity(intentMapsMain);
+
+                                    }
+
+                                }, timeout);
                             }
-
-                            finish();
-
-                            Intent intentMapsMain = new Intent(FullscreenActivity.this, MapsMainActivity.class);
-                            intentMapsMain.putExtra("username", username);
-                            startActivity(intentMapsMain);
-
                         }
 
-                    }, timeout);
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
 
 
                 }

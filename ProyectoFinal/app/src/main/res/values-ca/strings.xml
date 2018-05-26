@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Skate World</string>
 
-    <!--MapsActivity-->
+    <!--FullScreenActivity-->
     <string name="title_username">"Indica aquí el teu nom d'usuari:"</string>
     <string name="title_accept">"Aceptar"</string>
+    <string name="user_duplicated">Aquest usuari ja existeix.</string>
 
     <!--MapsActivity-->
     <string name="title_shop">Tenda</string>
