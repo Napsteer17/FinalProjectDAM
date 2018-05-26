@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -48,7 +49,6 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
     protected String username;
     DatabaseReference reference;
     String[] arrayMarkers = {"markerinicial", "marcador1", "marcador2", "marcador3", "marcador4", "marcador5", "marcador6", "marcador7"};
-    String[] arrayLocations = {"Plaça Llibertat", "Skatepark Reus", "Devil scooter Indoor", "C/ del pintor bergadá", "C/ del General Morages"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,14 +181,29 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
 
                 }
             });
+            playWinSound();
             //Ha conseguido premio.
             showChangeLangDialogWin();
+
         } else {
+            playLoseSound();
             //No ha conseguido premio.
             showChangeLangDialogLose();
+
         }
     }
 
+    //Sonido de diseño de tabla desbloqueado.
+    public void playWinSound(){
+        final MediaPlayer winSound=MediaPlayer.create(this, R.raw.winsound);
+        winSound.start();
+    }
+
+    //Sonido de diseño de tabla desbloqueado.
+    public void playLoseSound(){
+        final MediaPlayer loseSound=MediaPlayer.create(this, R.raw.losesound);
+        loseSound.start();
+    }
 
     /**
      * Manipulates the map once available.
@@ -204,22 +219,23 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
         mMap = googleMap;
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference referenceMarkers = database.getReference();
+        final DatabaseReference referenceMarkers = database.getReference("Locations");
 
-        referenceMarkers.addChildEventListener(new ChildEventListener() {
+        referenceMarkers.addValueEventListener(new ValueEventListener() {
+
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 String nameKey = dataSnapshot.getKey();
-                int countMarkers = (int) dataSnapshot.getChildrenCount();
+
 
                 //Si esta insertado el child "Locations", recojemos los valores de los
                 //childs 0 y 1(Corresponden a las cordenadas) e insertamos los marcadores
                 //mediante el metodo addMarker.
                 if (nameKey.equals("Locations")) {
-
+                    int countMarkers = (int) dataSnapshot.getChildrenCount();
                     for (int i = 0; i < countMarkers; i++) {
 
-                        final String nameMarker = arrayLocations[i];
+                        final String nameMarker = dataSnapshot.child("Location" + i).child("name").getValue().toString();
 
                         double firstPosition = (double) dataSnapshot.child("Location" + i).child("0").getValue();
                         double secondPosition = (double) dataSnapshot.child("Location" + i).child("1").getValue();
@@ -230,22 +246,6 @@ public class MapsMainActivity extends FragmentActivity implements OnMapReadyCall
 
 
                 }
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
