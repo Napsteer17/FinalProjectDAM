@@ -20,10 +20,12 @@ public class SkateAdapter
     ArrayList<SkateArticles> listaSkates;
     private View.OnClickListener listener;
 
+    //Constructor
     public SkateAdapter(ArrayList<SkateArticles> listaSkates) {
         this.listaSkates = listaSkates;
     }
 
+    //Cambio entre perspectiva, aunque finalmente no le hemos termiando dando uso.
     @Override
     public ViewHolderSkates onCreateViewHolder(ViewGroup parent, int viewType) {
         int layout=0;
@@ -51,6 +53,7 @@ public class SkateAdapter
         holder.foto.setImageResource(listaSkates.get(position).getFoto());
     }
 
+    //Consigue la cantidad de items insertados.
     @Override
     public int getItemCount() {
         return listaSkates.size();
@@ -67,6 +70,7 @@ public class SkateAdapter
         }
     }
 
+    //Metodo que inicializa los items relacionandolos con el xml
     public class ViewHolderSkates extends RecyclerView.ViewHolder {
 
         TextView etName,etInfo;

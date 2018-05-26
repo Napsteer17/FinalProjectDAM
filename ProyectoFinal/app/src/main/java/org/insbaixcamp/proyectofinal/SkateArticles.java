@@ -13,6 +13,7 @@ public class SkateArticles {
 
     }
 
+    //Constructor
     public SkateArticles(String nombre, String info, int foto) {
         this.nombre = nombre;
         this.info = info;
